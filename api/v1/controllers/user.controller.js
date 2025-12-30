@@ -52,7 +52,37 @@ module.exports.register = async (req, res) => {
 };
 
 //[post /api/v1/users/login]
-module.exports.login = async (req, res) => {};
+module.exports.login = async (req, res) => {
+  const email = req.body.email;
+  const password = req.body.password;
+  const user = await User.findOne({
+    email: email,
+    deleted: false,
+  });
+  if (!user) {
+    res.json({
+      code: 400,
+      message: "Email không tồn tại",
+    });
+    return;
+  }
+  if (md5(password) !== user.password) {
+    res.json({
+      code: 400,
+      message: "Sai mật khẩu !",
+    });
+  } else {
+    const token = user.token;
+    res.cookie("token", token);
+    res.json({
+      code: 200,
+      message: "Đăng nhập thành công",
+      token: token,
+    });
+  }
+
+  console.log(user);
+};
 
 //[Post] /api/v1/users/password/forgot
 // [Post] /api/v1/users/password/forgot
