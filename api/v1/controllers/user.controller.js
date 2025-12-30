@@ -192,4 +192,24 @@ module.exports.resetPassword = async (req, res) => {
   });
 };
 //[Get] /api/v1/users/detail
-module.exports.detail = async (req, res) => {};
+module.exports.detail = async (req, res) => {
+  const token = req.cookies.token;
+  console.log(token);
+
+  const user = await User.findOne({
+    token: token,
+    deleted: false,
+  }).select("-password -token");
+
+  if (!user) {
+    res.json({
+      code: 400,
+      message: "không tìm thấy tài khoản",
+    });
+  }
+  res.json({
+    code: 200,
+    message: "thành công",
+    info: user,
+  });
+};
