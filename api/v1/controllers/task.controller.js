@@ -5,7 +5,10 @@ const searchHelper = require("../../../helpers/search.js");
 // GET /api/v1/tasks
 module.exports.index = async (req, res) => {
   console.log(req.query);
-  const find = { deleted: false };
+  const find = {
+    deleted: false,
+    $or: [{ createdBy: req.user.id }, { listUser: req.user.id }],
+  };
 
   // Tìm kiếm theo từ khóa
   const search = searchHelper(req.query);
