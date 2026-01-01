@@ -7,13 +7,17 @@ const senMailHelper = require("../../../helpers/sendMail");
 module.exports.index = async (req, res) => {
   try {
     const find = { deleted: false };
-    const users = await User.find(find);
+    const users = await User.find(find).select("fullName email");
 
     if (users.length === 0) {
       return res.status(404).json({ message: "User not found" });
     }
 
-    res.status(200).json(users);
+    res.status(200).json({
+      code: 200,
+      message: "Lấy danh sách thành công",
+      users: users,
+    });
     // console.log(users);
   } catch (error) {
     res.status(500).json({ message: error.message });

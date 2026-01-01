@@ -12,7 +12,7 @@ const {
 const authMiddleware = require("../middlewares/auth.middleware");
 
 const router = express.Router();
-router.get("/", index);
+router.get("/", authMiddleware.requireAuth, index);
 router.post("/register", register);
 router.post("/login", login);
 router.post("/password/forgot", forgotPassword);

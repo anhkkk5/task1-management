@@ -145,8 +145,6 @@ module.exports.changeMutil = async (req, res) => {
 //Post /api/v1/tasks/create
 module.exports.create = async (req, res) => {
   try {
-    console.log(req.user.id);
-
     req.body.createdBy = req.user.id;
     const task = new Task(req.body);
     const data = await task.save();
