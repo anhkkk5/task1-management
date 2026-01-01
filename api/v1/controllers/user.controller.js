@@ -27,7 +27,7 @@ module.exports.register = async (req, res) => {
     email: req.body.email,
     deleted: false,
   });
-  console.log(existEmail);
+  // console.log(existEmail);
   if (existEmail) {
     res.json({
       code: 400,
@@ -38,6 +38,7 @@ module.exports.register = async (req, res) => {
       fullName: req.body.fullName,
       email: req.body.email,
       password: req.body.password,
+      token: generateHelper.generateRandomString(30),
     });
 
     user.save();
@@ -82,7 +83,7 @@ module.exports.login = async (req, res) => {
     });
   }
 
-  console.log(user);
+  // console.log(user);
 };
 
 //[Post] /api/v1/users/password/forgot
@@ -107,7 +108,7 @@ module.exports.forgotPassword = async (req, res) => {
   const objectForgotPassword = {
     email: email,
     otp: otp,
-    expireAt: Date.now() + timeExpire * 60,
+    expireAt: Date.now() + timeExpire * 60 * 1000,
   };
 
   const forgotPassword = new ForgotPassword(objectForgotPassword);
